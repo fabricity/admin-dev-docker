@@ -6,13 +6,13 @@ services:
 
     admin-mailhog:
       image: mailhog/mailhog:latest
-      container_name: mailhog
+      container_name: admin-mail
       ports:
         - "8862:8025"
 
     admin-db:
       image: postgres:11.1-alpine
-      container_name: db
+      container_name: admin-db
       environment:
         - POSTGRES_USER=root
         - POSTGRES_PASSWORD=root
@@ -22,7 +22,7 @@ services:
 
     admin-web:
       image: nginx:alpine
-      container_name: web
+      container_name: admin-web
       working_dir: /application
       volumes:
           - ./admin-demo:/application
@@ -32,7 +32,7 @@ services:
 
     admin:
       build: ./docker/php-fpm
-      container_name: app
+      container_name: admin
       working_dir: /application
       volumes:
         - ./admin-demo:/application

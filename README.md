@@ -12,6 +12,6 @@ docker-compose up -d
 docker-compose exec admin php -v
 ````
 
-- [localhost:88**61**](http://localhost:8861) -> web
-- [localhost:88**62**](http://localhost:8862) -> mailhog
+- [localhost:88**61**](http://localhost:8861) -> admin-web
+- [localhost:88**62**](http://localhost:8862) -> admin-mail
 - localhost:543**6** root:root -> postgres
