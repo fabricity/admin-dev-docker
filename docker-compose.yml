@@ -16,7 +16,7 @@ services:
       environment:
         - POSTGRES_USER=root
         - POSTGRES_PASSWORD=root
-        - POSTGRES_DB=backendpos
+        - POSTGRES_HOST_AUTH_METHOD=trust
       ports:
         - "5436:5432"
 
