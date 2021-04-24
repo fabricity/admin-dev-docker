@@ -7,11 +7,9 @@
 
 **Tip** chrome://flags -> allow-insecure-localhost -> enable
 
-## Add admin code
-````ssh
-git clone git@github.com:fabricity/admin-demo.git
-cd admin-demo && composer install
-````
+## Admin demo code
+By default, the admin-web container will attach a volume from local path **./../admin-demo**.
+You can change the path in the .env file.
 
 ## Docker
 ````ssh
