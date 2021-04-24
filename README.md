@@ -1,5 +1,12 @@
 # Admin Dev Docker
 
+- [localhost:8888](http://localhost:8888/) -> traefik
+- [https://admin-web.localhost/](https://admin-web.localhost/)
+- [https://admin-mail.localhost/](https://admin-mail.localhost/)
+- localhost:543**6** root:root -> postgres
+
+**Tip** chrome://flags -> allow-insecure-localhost -> enable
+
 ## Add admin code
 ````ssh
 git clone git@github.com:fabricity/admin-demo.git
@@ -12,6 +19,10 @@ docker-compose up -d
 docker-compose exec admin php -v
 ````
 
-- [localhost:88**61**](http://localhost:8861) -> admin-web
-- [localhost:88**62**](http://localhost:8862) -> admin-mail
-- localhost:543**6** root:root -> postgres
+### Clean commands
+````ssh
+docker-compose down
+docker rm -f $(docker ps -a -q)
+docker volume rm $(docker volume ls -q)
+docker-compose up -d
+````
