@@ -3,7 +3,6 @@
 ###############################################################################
 version: "3"
 services:
-
   admin-traefik:
     image: "traefik:v2.2"
     restart: always
@@ -28,6 +27,8 @@ services:
       - "8862:8025"
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.mailhog.rule=Host(`admin-mail.localhost`)"
+      - "traefik.http.routers.mailhog.entrypoints=web"
       - "traefik.http.routers.mailhog-tls.rule=Host(`admin-mail.localhost`)"
       - "traefik.http.routers.mailhog-tls.service=mailhog"
       - "traefik.http.routers.mailhog-tls.entrypoints=websecure"
@@ -43,6 +44,8 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - "5436:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   admin-web:
     image: nginx:alpine
@@ -53,15 +56,26 @@ services:
       - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.admin.rule=Host(`admin-web.localhost`)"
+      - "traefik.http.routers.admin.entrypoints=web"
       - "traefik.http.routers.admin-tls.rule=Host(`admin-web.localhost`)"
       - "traefik.http.routers.admin-tls.entrypoints=websecure"
       - "traefik.http.routers.admin-tls.tls=true"
 
   admin:
+    hostname: admin.docker
     build: ./docker/php-fpm
     container_name: admin
     working_dir: /application
+    environment:
+      - DATABASE_URL=postgresql://root:root@admin-db:5432/admin_demo?serverVersion=11&charset=utf8
+      - XDEBUG_CONFIG=remote_host=host.docker.internal
+      - PHP_IDE_CONFIG=serverName=admin.docker
     volumes:
       - ${PATH_DEMO_CODE}:/application
       - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+      - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/cli/conf.d/99-overrides.ini
+
+volumes:
+  pgdata:
 

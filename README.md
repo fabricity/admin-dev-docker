@@ -15,6 +15,9 @@ You can change the path in the .env file.
 ````ssh
 docker-compose up -d
 docker-compose exec admin php -v
+docker-compose exec admin php bin/console doctrine:database:create
+docker-compose exec admin php bin/console doctrine:schema:update --force 
+docker-compose exec admin php bin/console doctrine:fixtures:load
 ````
 
 ### Clean commands
@@ -22,5 +25,7 @@ docker-compose exec admin php -v
 docker-compose down
 docker rm -f $(docker ps -a -q)
 docker volume rm $(docker volume ls -q)
-docker-compose up -d
+docker-compose up -d --force-recreate 
 ````
+
+  
